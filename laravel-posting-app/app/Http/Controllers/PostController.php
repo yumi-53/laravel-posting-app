@@ -10,28 +10,24 @@ use App\Http\Requests\PostRequest;
 class PostController extends Controller
 {
     // 一覧ページ
-    public function index()
-    {
+    public function index() {
         $posts = Auth::user()->posts()->orderBy('updated_at', 'asc')->get();
 
         return view('posts.index', compact('posts'));
     }
 
      // 詳細ページ
-    public function show(Post $post)
-    {
+    public function show(Post $post) {
         return view('posts.show', compact('post'));
     }
 
     // 作成ページ
-    public function create()
-    {
+    public function create() {
         return view('posts.create');
     }
 
     // 作成機能
-    public function store(PostRequest $request)
-    {
+    public function store(PostRequest $request) {
         $post = new Post;
         $post->title = $request->input('title');
         $post->content = $request->input('content');
@@ -42,8 +38,7 @@ class PostController extends Controller
     }
 
     // 編集ページ
-    public function edit(Post $post)
-    {
+    public function edit(Post $post) {
         if ($post->user_id !== Auth::id()) {
             return redirect()->route('posts.index')->with('erroe_message', '不正なアクセスです。');
         }
@@ -52,8 +47,7 @@ class PostController extends Controller
     }
 
     // 更新機能
-    public function update(PostRequest $request, Post $post)
-    {
+    public function update(PostRequest $request, Post $post) {
         if ($post->user_id !== Auth::id()) {
             return redirect()->route('posts.index')->with('erroe_message', '不正なアクセスです。');
         }
@@ -66,7 +60,7 @@ class PostController extends Controller
     }
 
     //  削除機能
-    public function destroy(Post $post){
+    public function destroy(Post $post) {
         if ($post->user_id !== Auth::id()) {
             return redirect()->route('posts.index')->with('erroe_message', '不正なアクセスです。');
         }
